@@ -1,0 +1,390 @@
+swagger: "2.0"
+info:
+  description: "Breath Analyzer Web API"
+  version: "1.0.0"
+  title: "Breath Analyzer API"
+  
+host: "localhost:8080"
+basePath: "/v1"
+
+schemes:
+- "https"
+- "http"
+paths:
+   /ba:
+    get:
+      summary: Gets all the BA records
+      operationId: getBARecords
+      tags:
+      - "breathAnalyzer"
+     
+      responses:
+        "200":
+          description: A paged array of pets
+          headers:
+            x-next:
+              type: string
+              description: A link to the next page of responses
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/BreathAnalyzer'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+
+   /ba/lobby/{lobby}:
+    get:
+      summary: Gets all BA record of a lobby
+      operationId: getLobbyBARecords
+      tags:
+      - "breathAnalyzer"
+      parameters:
+      - name: "lobby"
+        in: "path"
+        description: "lobby whose ba needs to be fetched"
+        required: true
+        type: string
+      responses:
+        "200":
+          description: A paged array of BA records
+          headers:
+            x-next:
+              type: string
+              description: A link to the next page of responses
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/BreathAnalyzer'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+
+   /ba/crew/{crewid}:
+    get:
+      summary: Gets all BA record of a crew
+      operationId: getCrewBARecords
+      tags:
+      - "breathAnalyzer"
+      parameters:
+      - name: "crewid"
+        in: "path"
+        description: "CrewId whose ba needs to be fetched"
+        required: true
+        type: string
+      responses:
+        "200":
+          description: A paged array of BA records
+          headers:
+            x-next:
+              type: string
+              description: A link to the next page of responses
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/BreathAnalyzer'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+
+
+   /ba/{id}:
+    get:
+      summary: Gets the BA record 
+      operationId: getBAValue
+      tags:
+      - "breathAnalyzer"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "id whose ba needs to be fetched"
+        required: true
+        type: integer
+        format: int64
+      responses:
+        "200":
+          description: A paged array of pets
+          headers:
+            x-next:
+              type: string
+              description: A link to the next page of responses
+          schema:
+            $ref: '#/definitions/BreathAnalyzer'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+            
+            
+    post:
+      tags:
+      - "breathAnalyzer"
+      summary: "Store BA values"
+      description: "This can only be done by the logged in user."
+      operationId: "storeBAValue"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "id whose ba needs to be stored"
+        required: true
+        type: integer
+        format: int64
+      - in: "body"
+        name: "body"
+        description: "Created user object"
+        required: true
+        schema:
+          $ref: "#/definitions/BreathAnalyzer"
+      responses:
+        default:
+          description: "successful operation"
+  
+    put:
+      tags:
+      - "breathAnalyzer"
+      summary: "Updated BA Record"
+      description: "This can be used to update only the email  ( or any other fields if required )."
+      operationId: "updateBA"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "id whose ba needs to be updated"
+        required: true
+        type: integer
+        format: int64
+      - in: "body"
+        name: "body"
+        description: "Updated user object"
+        required: true
+        schema:
+          $ref: "#/definitions/BreathAnalyzer"
+      responses:
+        "400":
+          description: "Invalid user id supplied"
+        "404":
+          description: "User not found"
+    
+   /zone:
+    get:
+      summary: Gets a list of zones
+      operationId: getZones
+      tags:
+      - "Locations"     
+      responses:
+        "200":
+          description: A paged array of zones
+          headers:
+            x-next:
+              type: string
+              description: A link to the next page of responses
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Zone'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'  
+
+   /division:
+    get:
+      summary: Gets a list of zones
+      operationId: getAllDivisions
+      tags:
+      - "Locations"     
+      responses:
+        "200":
+          description: A paged array of divisions
+          headers:
+            x-next:
+              type: string
+              description: A link to the next page of responses
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Division'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'  
+
+   /division/{zone}:
+    get:
+      summary: Gets a list of Divisions of a zone
+      operationId: getDivisions
+      tags:
+      - "Locations"     
+      parameters:
+      - name: "zone"
+        in: "path"
+        description: "zone name"
+        required: true
+        type: string
+
+      responses:
+        "200":
+          description: A paged array of divisions
+          headers:
+            x-next:
+              type: string
+              description: A link to the next page of responses
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Division'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'  
+
+
+   /lobby/{division}:
+    get:
+      summary: Gets a list of Lobbies of a Division
+      operationId: getLobbies
+      tags:
+      - "Locations"     
+      parameters:
+      - name: "division"
+        in: "path"
+        description: "Division name"
+        required: true
+        type: string
+        
+      responses:
+        "200":
+          description: A paged array of Lobbies
+          headers:
+            x-next:
+              type: string
+              description: A link to the next page of responses
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Lobby'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'  
+
+
+
+definitions:
+  
+  BreathAnalyzer:
+    x-java-class-annotations:
+      -  "@javax.persistence.Entity"
+    type: "object"
+    properties:
+      id:
+        x-java-field-annotations:
+          - "@javax.persistence.Id"
+          - "@javax.persistence.GeneratedValue(strategy = javax.persistence.GenerationType.IDENTITY)"
+        type: integer
+        format: int64
+      crewId:
+        type: "string"        
+      value:
+        type: integer
+      location:
+        type: "string"
+      deviceSno:
+        type: "string"
+      recordNo:
+        type: "string"
+      exhaleVol:
+        type: "string"
+      exhaleTime:
+        type: "string"
+      calibrationDate:
+        x-java-field-annotations:
+          - "@com.fasterxml.jackson.annotation.JsonFormat(pattern=\"dd-MM-yyyy\", shape = com.fasterxml.jackson.annotation.JsonFormat.Shape.STRING)"
+        type: string
+        format: string
+        description: 'Calibration Date of BA Device'
+        example: "30-01-2021"       
+      testDateTime:
+        x-java-field-annotations:
+          - "@com.fasterxml.jackson.annotation.JsonFormat(pattern=\"dd-MM-yyyyTHH:mm:ss.SSS\", shape = com.fasterxml.jackson.annotation.JsonFormat.Shape.STRING)"
+        type: string
+        format: string
+        description: 'time of BA Test'
+        example: '1995-09-07T10:40:52Z' 
+      image:
+        type: "string"
+      
+    xml:
+      name: "BreathAnalyzer"
+
+  
+
+  Zone:
+    x-java-class-annotations:
+      -  "@javax.persistence.Entity"
+    type: "object"
+    properties:
+      id:
+        x-java-field-annotations:
+          - "@javax.persistence.Id"
+          - "@javax.persistence.GeneratedValue(strategy = javax.persistence.GenerationType.IDENTITY)"
+        type: integer
+        format: int64
+      zone:
+        type: "string"        
+  Division:
+    x-java-class-annotations:
+      -  "@javax.persistence.Entity"
+    type: "object"
+    properties:
+      id:
+        x-java-field-annotations:
+          - "@javax.persistence.Id"
+          - "@javax.persistence.GeneratedValue(strategy = javax.persistence.GenerationType.IDENTITY)"
+        type: integer
+        format: int64
+      division:
+        type: "string"  
+      zone:
+        type: "string"       
+  Lobby:
+    x-java-class-annotations:
+      -  "@javax.persistence.Entity"
+    type: "object"
+    properties:
+      id:
+        x-java-field-annotations:
+          - "@javax.persistence.Id"
+          - "@javax.persistence.GeneratedValue(strategy = javax.persistence.GenerationType.IDENTITY)"
+        type: integer
+        format: int64
+      lobby:
+        type: "string"    
+      division:
+        type: "string"  
+         
+         
+
+   
+  Error:
+    type: "object"
+    required:
+      - code
+      - message
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string    
+  
+ 
+externalDocs:
+  description: "Find out more about Swagger"
+  url: "http://swagger.io"
