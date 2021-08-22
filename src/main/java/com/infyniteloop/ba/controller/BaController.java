@@ -81,7 +81,7 @@ public class BaController {
 			@ApiResponse(code = 200, message = "A paged array of pets", response = BreathAnalyzer.class),
 			@ApiResponse(code = 200, message = "unexpected error", response = Error.class) })
 	@RequestMapping(value = "/ba/{id}", method = RequestMethod.GET)
-	public ResponseEntity<BreathAnalyzer> getBAValue(
+	public ResponseEntity<BreathAnalyzer> getBARecordById(
 			@ApiParam(value = "id whose ba needs to be fetched", required = true) @PathVariable("id") Long id,
 			HttpServletRequest request) throws MissingHeaderException,ResourceNotFoundException {
 

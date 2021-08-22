@@ -8,6 +8,8 @@ class BaApplicationTests {
 
 	@Test
 	void contextLoads() {
+		
+		System.out.println(">>>>>>>>>>>>>>>> contextLoads" );
 	}
 
 }
